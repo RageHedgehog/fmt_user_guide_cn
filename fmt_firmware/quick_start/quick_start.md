@@ -62,20 +62,21 @@ FMT 包含 FMU (Flight Management Uinit) 固件和 IO (Input/Output) 固件，�
   / __(_)_____ _  ___ ___ _  ___ ___  / /_
  / _// / __/  ' \/ _ `/  ' \/ -_) _ \/ __/
 /_/ /_/_/ /_/_/_/\_,_/_/_/_/\__/_//_/\__/
-Firmware....................FMT FMU v0.1.2
+Firmware....................FMT FMU v0.1.3
 Kernel....................RT-Thread v3.0.5
 RAM.................................192 KB
-Board...........................Pixhawk V2
+Board..............................Pixhawk
 Vehicle.........................Quadcopter
-INS Model.........................Base INS
-FMS Model.........................Base FMS
-Control Model..............Base Controller
+INS Model..................Base INS v0.1.0
+FMS Model..................Base FMS v0.1.0
+Control Model.......Base Controller v0.1.0
 Task Initialize:
   vehicle...............................OK
   fmtio.................................OK
   comm..................................OK
   logger................................OK
   status................................OK
+
 msh />
 ```
 
