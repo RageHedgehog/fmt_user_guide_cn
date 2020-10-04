@@ -5,13 +5,13 @@
 
 硬件连接如图所示:
 
-- `TELEM 2`: 默认作为控制台**Console**的输出，默认波特率*57600*。如果在**Mavlink Console**中输入任意字符，则控制台将被自动映射到**Mavlink Console**上。
-- `TELEM 1`: 默认作为**Mavlink**的输出口，默认波特率*57600*。如果**USB**连接的话，则**Mavlink**则自动换到到**USB**设备上输出。
+- `TELEM 2`: 默认作为控制台**Console**的输出，默认波特率*57600*。
+- `TELEM 1`: 默认作为**Mavlink**的输出口，默认波特率*57600*。
 - `GPS`: 连接GPS模块，默认波特率*9600*。
-- `RC`: 连接遥控器的*PPM*信号,目前最多支持8路PPM信号。
-- `SB`: 连接遥控器的*SBUS*信号，目前还未支持。
-- `MAIN OUT`: 支持最多8路PWM输出信号 (也可改为捕获输入信号)。
-- `AUX OUT`: 支持最多6路PWM输出信号 (也可改为捕获输入信号)。
+- `RC`: 连接遥控器的*PPM*/*SBUS*信号,目前最多支持8路PPM信号/16路SBUS信号。
+- `SB`: SBUS信号输出口。
+- `MAIN OUT`: 支持最多8路PWM输出信号 (可改为捕获输入信号)。
+- `AUX OUT`: 支持最多6路PWM输出信号 (可改为捕获输入信号)。
 - `其它`：TBA。
 
 ## 编译环境
@@ -23,9 +23,13 @@
 - **USB驱动**：下载 [STM32 USB驱动](https://www.st.com/en/development-tools/stsw-stm32102.html) (Only for Windows)
 
 ## 编译固件
-在配置好了编译环境后，首先需要配置系统的环境变量。以Windows系统为例，进入*Environment Variables*界面，添加一个`RTT_EXEC_PATH`的环境变量，并且将其*Value*设置为*arm-none-eabi- toolchain*的下载地址，比如`D:\gcc-arm-none-eabi-7-2018-q2-update-win32\bin`。
+在配置好了编译环境后，首先需要配置`RTT_EXEC_PATH`的环境变量。将其值设置为编译器的地址，如
 
-同时，在命令行窗口中输入`scons --version`和`python --version`查看版本是否正常。完成以上步骤后，可以开始编译FMT固件。
+```
+export RTT_EXEC_PATH=$arm-none-eabi-7-2018-q2-update/bin
+```
+
+在命令行窗口中输入`scons --version`和`python --version`查看版本是否正常。完成以上步骤后，可以开始编译FMT固件。
 
 ### 编译**FMT FMU**固件
 ```
@@ -42,20 +46,20 @@ scons -j4
 编译完成后，固件`fmt_io.bin`将生成在*build*目录下。
 
 ## 固件下载
-FMT 包含 FMU (Flight Management Uinit) 固件和 IO (Input/Output) 固件，需要分别进行下载 (Pixhawk V2 包含两个 CPU) 。FMT 使用 Pixhawk 内置的 bootloader 进行固件的下载，所以在下载了FMT的固件后，也能够很方便的刷回PX4或者APM的固件。
+FMT 包含 FMU (Flight Management Uinit) 固件和 IO (Input/Output) 固件，需要分别进行下载 (Pixhawk V2 包含两个 CPU) 。FMT 使用 Pixhawk 内置的 bootloader 进行固件的下载，所以在下载了FMT的固件后也能随时刷回PX4/APM的固件。
 
 ### 下载FMT FMU固件
-目前有两种方式下载FMU固件: 通过uploader.py脚本下载或者通过QGroundControl (QGC)下载。
+目前有两种方式下载FMU固件: 通过*uploader.py*脚本下载或者通过*QGC*地面站下载。
 
 - **uploader.py脚本：**
-将飞控连接usb线插入PC (关闭地面站)，然后在`fmt_fmu/target/pixhawk`目录中执行`python uploader.py`。脚本将自动找到对应端口并开始下载位于*build*目录下的`fmt_fmu.bin`固件。如果脚本提示找不到端口，可以尝试重新连接飞控usb线。
+在`fmt_fmu/target/pixhawk`目录下执行`python uploader.py`，然后将飞控通过usb连接至PC。脚本将自动检测FMU的端口开始下载位于*build*目录下的`fmt_fmu.bin`固件。如果脚本提示找不到端口，可以尝试重复以上步骤或者检查是否有正确安装usb驱动。
 
 - **QGC地面站：**
-进入*Firmware Setup*页面，然后使用usb线连接飞控和PC。这时会弹出选择固件的界面，选择`Advanced Settings`，然后在下拉框中选择`Custom firmware file`，然后选择编译的`fmt_fmu.bin`固件即可开始下载。
+进入*Firmware Setup*页面，然后使用usb线连接飞控和PC。这时会弹出选择固件的界面，选择`Advanced Settings`->`Custom firmware file`，然后选择`fmt_fmu.bin`固件即可开始下载。
 
 ![qgc_download](figures/qgc_download.png)
 
-固件下载成功后，可以使用串口(**TELEM 2, baudrate: 57600**)或者QGC的**Mavlink Console**连接控制台，如下图所示为飞控开机打印的信息：
+固件下载成功后，可以使用串口(**TELEM 2, baudrate: 57600**)，QGC的**Mavlink Console**或者**mavlink_shell.py**脚本连接控制台，如下图所示为飞控开机打印的信息，这里显示了系统的信息，如固件版本，内核版本和模型版本等。
 
 ```
    _____                               __
@@ -80,18 +84,18 @@ Task Initialize:
 msh />
 ```
 
-除此之外，还可以在VS Code中运行`fmt_fmu/target/pixhawk/mavlink_shell.py`脚本来连接console。
-
 ### 下载FMT IO固件
-协处理器IO的固件通过FMU的文件系统进行下载。首先需要连接将编译的`fmt_io.bin`固件放到sd卡上，可以通过读卡器拷贝。而更方便的方式是通过QGC的FTP功能进行文件上传 (*Widget->Onboard Files*)。
+协处理器的IO固件需通过FMU进行下载，所以在下载IO固件之前需确保FMU已经正常运行起来。
 
-文件上传后，进入控制台(console)，输入如下指令:
+首先将IO固件`fmt_io.bin`放到sd卡上。FMT支持FTP功能，故可以通过QGC进行文件上传 (*Widget->Onboard Files*)，当然也可以使用SD读卡器进行文件拷贝。
+
+固件上传后，进入控制台输入如下指令:
 ```
 fmtio upload $path/fmt_io.bin
 ```
 其中`$path`为存放*fmt_io.bin*的路径，如果是放在当前目录，则可以省略，直接输入`fmtio upload`即可。
 
-**注意：**如果是第一次下载IO固件，在输入`upload`指令后，需要手动按一下位于**Pixhawk**右侧的IO复位按钮，使得IO进入bootloader程序。
+>  注意：因为PX4的IO固件不识别FMT的重启指令，所以在第一次下载FMT IO固件时，在输入`fmtio upload`指令后，需要手动按下位于**Pixhawk**右侧的IO复位按钮，使得IO复位并进入bootloader程序。
 
 下载完成后，在控制台输入`fmtio hello`指令，如果IO固件更新成功，应该看到IO发来的如下消息：
 
