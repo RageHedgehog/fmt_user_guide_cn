@@ -42,7 +42,7 @@ static int _my_mcn_topic_echo(void* param)
 {
 	test_data data;
 	if(mcn_copy_from_hub((McnHub*)param, &data) == FMT_EOK){
-		console_printf("a:%d b:%f c:%c %c %c %c\n", data.a, data.b, data.c[0], data.c[1],               data.c[2], data.c[3]);
+		console_printf("a:%d b:%f c:%c %c %c %c\n", data.a, data.b, data.c[0], data.c[1], data.c[2], data.c[3]);
 	}
 	return 0;
 }
