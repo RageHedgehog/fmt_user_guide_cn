@@ -4,6 +4,8 @@
 
 ![mil_model](figures/mil_model.png)
 
+<p align="center"><img width="700" src="figures/mil_model.png" alt=structure"></p>
+
 它包括我们前面所述的四个算法模块，我们可以根据应用场景和需求从算法库中选择对应模型。如果没有满足要求的模型则可以在现有的模型基础上进行二次开发。MIL 仿真为一个完整的闭环仿真体系，由于包含了被控对象模型 (Plant)，可以将电机输出的信号转化为被控对象的状态信息，如姿态，速度和位置等。MIL 可以很好地验证算法的初步功能，特别是跟被控对象无关的功能（如状态机和导航），而与被控对象相关功能 (如控制器) 的仿真精度，则取决于被控对象模型建立的精度。通过科学的建模手段对被控对象进行建模，可以得到和真实世界行为十分接近的仿真数据。
 
 ## 运行 MIL 仿真
@@ -27,5 +29,5 @@ MIL 执行完后，可以查看模型的输出和任意内部状态的数据。M
 ## 可视化
 `Plant`模块输出了无人机的状态信息，如姿态，位置等，可以将这些信息送给3D软件进行可视化。Matlab内部提供了一个无人机的3D模型，我们可以通过它来显示无人机的状态，当然也可以将数据传递给其它仿真器，如Flightgear，Gazebo等来进行可视化显示。
 
-![matlab_3D](figures/matlab_3D.png)
-![flightgear](figures/flightgear.png)
+<p align="left"><img width="500" src="figures/matlab_3D.png" alt=matlab 3D"></p>
+<p align="left"><img width="500" src="figures/flightgear.png" alt=flightgear"></p>
