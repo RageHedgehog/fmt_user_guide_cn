@@ -1,8 +1,8 @@
 # 快速上手
-FMT Model基于Matlab 2018b环境开发，需要包含Matlab/Simulink和一些三方库的License。推荐使用Matlab 2018b，更新的版本没有进行充分测试。
+FMT Model 主要在**Matlab 2018b**中开发和测试，因此强烈建议使用此版本。 但是也可以使用更高版本的Matlab打开该项目，但这没有进行充分测试。
 
 ## 初始化
-打开Matlab，进入`$FMT_Model`目录并执行`FMT_Model.pri`工程文件。初始化成功后，应该可以看到$FMT_Model目录下的所有文件夹（包括子文件夹）都已经被加入到Matlab的路径中。
+要初始化项目，只需单击并运行`FMT_Model.prj`，它将为您完成所有初始化工作。
 
 ## 目录结构
 FMT Model的目录如图所示。下面分别介绍各个目录的作用以及存放的文件：
