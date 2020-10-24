@@ -84,6 +84,9 @@ Task Initialize:
 msh />
 ```
 
+### 系统配置文件
+FMT使用[TOML](https://toml.io/en/)作为系统配置文件的格式，当下载完成固件后，将[$FMT_Firmware/fmt_fmu/target/pixhawk/sysconfig.toml](https://github.com/FirmamentPilot/FMT_Firmware/blob/master/fmt_fmu/target/pixhawk/sysconfig.toml)默认配置文件上传到飞控的`/sys`目录下，然后重启飞控。
+
 ### 下载FMT IO固件
 协处理器的IO固件需通过FMU进行下载，所以在下载IO固件之前需确保FMU已经正常运行起来。
 
